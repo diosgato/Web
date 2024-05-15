@@ -1,0 +1,26 @@
+- name: Crear usuarios
+  hosts: all
+  become: yes
+  vars_prompt:
+    - name: username
+      prompt: "Introduce el nombre del usuario nuevo"
+      private: no
+    - name: password
+      prompt: "Introduce la contraseña del usuario"
+      private: yes
+    - name: group
+      prompt: "Introduce el nombre del grupo del usuario"
+      private: no
+
+  tasks:
+    - name: Crear el grupo en caso de que no exista
+      group:
+        name: "{{ group }}"
+        state: present
+
+    - name: Crear usuario
+      user:
+        name: "{{ username }}"
+        password: "{{ password | password_hash('sha512') }}"
+        state: present
+        group: "{{ group }}"
