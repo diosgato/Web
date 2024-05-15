@@ -1,0 +1,13 @@
+---
+- name: Fetch file from clients
+  hosts: all
+  vars_prompt:
+    - name: file_path
+      prompt: "Introduce la ruta del archivo en el cliente:"
+      private: False
+  tasks:
+    - name: Fetch file from clients
+      fetch:
+        src: "{{ file_path }}"
+        dest: "/home/minikube/"
+      run_once: true
